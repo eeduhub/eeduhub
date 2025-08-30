@@ -11,7 +11,7 @@ export const Footer = () => {
             <Link to="/" className="flex items-center space-x-2 mb-4">
               <GraduationCap className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                CryptoCampus
+                eeduhub
               </span>
             </Link>
             <p className="text-muted-foreground mb-4 max-w-md">
@@ -79,7 +79,7 @@ export const Footer = () => {
         <div className="border-t border-border pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-muted-foreground text-sm">
-              © 2024 CryptoCampus. All rights reserved.
+              © 2024 eeduhub. All rights reserved.
             </p>
             <p className="text-muted-foreground text-sm mt-2 md:mt-0">
               Built with 💜 for crypto education

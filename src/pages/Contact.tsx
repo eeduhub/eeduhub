@@ -55,7 +55,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      details: "support@cryptocampus.com",
+      details: "support@eeduhub.com",
       description: "Send us an email anytime"
     },
     {

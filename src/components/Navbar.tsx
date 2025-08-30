@@ -24,7 +24,7 @@ export const Navbar = () => {
           <Link to="/" className="flex items-center space-x-2">
             <GraduationCap className="h-8 w-8 text-primary" />
             <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              CryptoCampus
+              eeduhub
             </span>
           </Link>
 

@@ -35,7 +35,7 @@ const About = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            About <span className="bg-gradient-primary bg-clip-text text-transparent">CryptoCampus</span>
+            About <span className="bg-gradient-primary bg-clip-text text-transparent">eeduhub</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             We're passionate about empowering individuals with the knowledge and skills needed 
@@ -63,7 +63,7 @@ const About = () => {
           <div>
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
             <p className="text-muted-foreground mb-4">
-              Founded in 2021 by a team of blockchain experts and educators, CryptoCampus was born 
+              Founded in 2021 by a team of blockchain experts and educators, eeduhub was born 
               from the need to bridge the gap between complex cryptocurrency concepts and practical, 
               accessible learning.
             </p>
