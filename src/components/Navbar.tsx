@@ -41,8 +41,8 @@ export const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Button variant="default" size="sm" className="bg-gradient-primary hover:opacity-90">
-              Get Started
+            <Button variant="default" size="sm" className="bg-gradient-primary hover:opacity-90" asChild>
+              <Link to="/login">Get Started</Link>
             </Button>
           </div>
 
@@ -72,8 +72,8 @@ export const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Button variant="default" size="sm" className="bg-gradient-primary hover:opacity-90 w-full">
-              Get Started
+            <Button variant="default" size="sm" className="bg-gradient-primary hover:opacity-90 w-full" asChild>
+              <Link to="/login">Get Started</Link>
             </Button>
           </div>
         )}
