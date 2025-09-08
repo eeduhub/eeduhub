@@ -2,50 +2,50 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { Play, Clock, Users, Star, BookOpen, Download } from "lucide-react";
-import sampleLessonImage from "@/assets/sample-lesson.jpg";
+import { Play, Clock, Star, BookOpen, Download } from "lucide-react";
+
 
 const SampleClass = () => {
   const modules = [
     {
       title: "Introduction to Bitcoin",
       duration: "15 min",
-      type: "video",
-      completed: false
+      type: "1 video",
+      completed: false,
     },
     {
       title: "Understanding Blockchain Technology",
-      duration: "20 min", 
-      type: "video",
-      completed: false
+      duration: "20 min",
+      type: "4 video",
+      completed: false,
     },
     {
       title: "Your First Crypto Wallet",
       duration: "12 min",
-      type: "hands-on",
-      completed: false
+      type: "2 video",
+      completed: false,
     },
     {
       title: "Security Best Practices",
       duration: "18 min",
-      type: "video",
-      completed: false
+      type: "3 video",
+      completed: false,
     },
     {
       title: "Quiz: Cryptocurrency Basics",
       duration: "10 min",
       type: "quiz",
-      completed: false
-    }
+      completed: false,
+    },
   ];
 
   const features = [
     "HD video lessons with subtitles",
-    "Downloadable resources and guides",
-    "Interactive quizzes and assignments", 
+    "Practical resources & easy-to-follow guides",
+    "Doubt-clearing support from mentors",
     "Community discussion forums",
     "Mobile-friendly learning platform",
-    "Progress tracking and certificates"
+    "Progress tracking and certificates",
   ];
 
   return (
@@ -53,12 +53,14 @@ const SampleClass = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-primary bg-clip-text text-transparent">Sample Class</span>
+          <h1 className="text-2xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-primary bg-clip-text text-transparent">
+              Sample Class
+            </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Get a taste of our comprehensive crypto education with this free sample lesson 
-            covering the fundamentals of digital currency.
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+            Get a taste of our comprehensive crypto education with this free
+            sample lesson covering the fundamentals of digital currency.
           </p>
         </div>
 
@@ -68,41 +70,44 @@ const SampleClass = () => {
             {/* Video Section */}
             <Card className="mb-8 bg-gradient-card border-border">
               <CardContent className="p-0">
-                <div 
-                  className="relative h-64 md:h-96 bg-cover bg-center rounded-t-lg"
-                  style={{ backgroundImage: `url(${sampleLessonImage})` }}
-                >
-                  <div className="absolute inset-0 bg-black/40 rounded-t-lg flex items-center justify-center">
-                    <Button size="lg" className="bg-primary/90 hover:bg-primary shadow-glow">
-                      <Play className="mr-2 h-6 w-6" />
-                      Play Sample Lesson
-                    </Button>
-                  </div>
+                <div className="relative h-64 md:h-96 bg-cover bg-center rounded-t-lg overflow-hidden">
+                  <iframe
+                    className="absolute inset-0 w-full h-full rounded-t-lg"
+                    src="https://www.youtube.com/embed/rYQgy8QDEBI?si=bJUpUCUWPjBu476P"
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+
+                  {/* ✅ Overlay will not block clicks now */}
+                  <div className="absolute inset-0 bg-black/40 rounded-t-lg flex items-center justify-center pointer-events-none"></div>
+
                   <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">
                     FREE
                   </Badge>
                 </div>
+
                 <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-2">
+                  <h2 className="text-sm md:text-xl font-bold mb-2">
                     Cryptocurrency Fundamentals: Your First Steps
                   </h2>
-                  <div className="flex items-center space-x-4 text-muted-foreground mb-4">
+                  <div className="flex items-center space-x-2 text-muted-foreground mb-4 mt-4">
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-1" />
-                      75 minutes
+                     <p className="text-sm">75 minutes</p>
                     </div>
-                    <div className="flex items-center">
-                      <Users className="h-4 w-4 mr-1" />
-                      12,847 students
-                    </div>
+
                     <div className="flex items-center">
                       <Star className="h-4 w-4 mr-1 text-yellow-500" />
-                      4.9 (2,341 reviews)
+                      <p className="text-sm">4.9</p>
                     </div>
                   </div>
-                  <p className="text-muted-foreground">
-                    Learn the basics of cryptocurrency, blockchain technology, and how to safely 
-                    store and manage your digital assets. Perfect for complete beginners.
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    Learn the basics of cryptocurrency, blockchain technology,
+                    and how to safely store and manage your digital assets.
+                    Perfect for complete beginners.
                   </p>
                 </div>
               </CardContent>
@@ -119,20 +124,20 @@ const SampleClass = () => {
               <CardContent>
                 <div className="space-y-3">
                   {modules.map((module, index) => (
-                    <div 
+                    <div
                       key={index}
-                      className="flex items-center justify-between p-4 bg-background/50 rounded-lg hover:bg-background/70 transition-colors"
+                      className="flex items-center justify-between p-2 bg-background/50 rounded-lg hover:bg-background/70 transition-colors"
                     >
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-sm font-medium">
                           {index + 1}
                         </div>
                         <div>
-                          <h4 className="font-medium">{module.title}</h4>
+                          <h4 className="text-xs md:text-sm  font-medium">{module.title}</h4>
                           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                             <Clock className="h-3 w-3" />
-                            <span>{module.duration}</span>
-                            <Badge variant="outline" className="text-xs">
+                            <span className="text-xs md:text-sm ">{module.duration}</span>
+                            <Badge variant="outline" className="text-[10px] md:text-xs">
                               {module.type}
                             </Badge>
                           </div>
@@ -151,18 +156,19 @@ const SampleClass = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* CTA Card */}
-            <Card className="bg-gradient-primary text-white">
-              <CardContent className="p-6 text-center">
-                <h3 className="text-xl font-bold mb-2">Ready for More?</h3>
-                <p className="mb-4 opacity-90">
-                  Unlock the complete cryptocurrency mastery course with 20+ hours of content.
-                </p>
-                <Button variant="secondary" className="w-full mb-2">
-                  Enroll Now - $99
-                </Button>
-                <p className="text-sm opacity-75">30-day money-back guarantee</p>
-              </CardContent>
-            </Card>
+          <Card className="bg-gradient-primary text-white">
+  <CardContent className="p-6 text-center">
+    <h3 className="text-xl font-bold mb-2">Ready for More?</h3>
+    <p className="mb-4 opacity-90">
+      Unlock the complete cryptocurrency mastery course Best content.
+    </p>
+    <Button variant="secondary" className="w-full mb-2 ">
+      <span className="text-sm line-through opacity-70">INR 36,000</span>
+      <span className="text-lg font-bold">3,600 /-</span>
+    </Button>
+  </CardContent>
+</Card>
+
 
             {/* Features */}
             <Card className="bg-gradient-card border-border">
@@ -174,7 +180,9 @@ const SampleClass = () => {
                   {features.map((feature, index) => (
                     <li key={index} className="flex items-start space-x-2">
                       <Download className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">{feature}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -186,7 +194,8 @@ const SampleClass = () => {
               <CardContent className="p-6 text-center">
                 <h3 className="font-semibold mb-2">Have Questions?</h3>
                 <p className="text-muted-foreground text-sm mb-4">
-                  Our team is here to help you succeed in your crypto learning journey.
+                  Our team is here to help you succeed in your crypto learning
+                  journey.
                 </p>
                 <Link to="/contact">
                   <Button variant="outline" size="sm" className="w-full">

@@ -12,6 +12,8 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import AdminPage from "./pages/AdminPage";
+import AdminLogin from "./pages/AdminLogin";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/eeduhubAdmin" element={<AdminPage/>} />
+              <Route path="/AdminLogin" element={<AdminLogin/>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

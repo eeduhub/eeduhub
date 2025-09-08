@@ -12,26 +12,28 @@ const Contact = () => {
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
   const { toast } = useToast();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Basic validation
     if (!formData.name || !formData.email || !formData.message) {
       toast({
         title: "Please fill in all required fields",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -39,15 +41,15 @@ const Contact = () => {
     // Simulate form submission
     toast({
       title: "Message sent successfully!",
-      description: "We'll get back to you within 24 hours."
+      description: "We'll get back to you within 24 hours.",
     });
-    
+
     // Reset form
     setFormData({
       name: "",
       email: "",
       subject: "",
-      message: ""
+      message: "",
     });
   };
 
@@ -56,26 +58,26 @@ const Contact = () => {
       icon: Mail,
       title: "Email Us",
       details: "support@eeduhub.com",
-      description: "Send us an email anytime"
+      description: "Send us an email anytime",
     },
     {
       icon: Phone,
       title: "Call Us",
       details: "+1 (555) 123-4567",
-      description: "Mon-Fri 9AM-6PM EST"
+      description: "Mon-Fri 9AM-6PM EST",
     },
     {
       icon: MapPin,
       title: "Visit Us",
       details: "123 Education St, Tech City, TC 12345",
-      description: "Our main office location"
+      description: "Our main office location",
     },
     {
       icon: Clock,
       title: "Response Time",
       details: "< 24 hours",
-      description: "Average response time"
-    }
+      description: "Average response time",
+    },
   ];
 
   return (
@@ -83,12 +85,14 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-primary bg-clip-text text-transparent">Contact Us</span>
+          <h1 className="text-2xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-primary bg-clip-text text-transparent">
+              Contact Us
+            </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Have questions about our courses or need help with your crypto learning journey? 
-            We're here to help you succeed.
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+            Have questions about our courses or need help with your crypto
+            learning journey? We're here to help you succeed.
           </p>
         </div>
 
@@ -96,7 +100,7 @@ const Contact = () => {
           {/* Contact Form */}
           <Card className="bg-gradient-card border-border">
             <CardHeader>
-              <CardTitle>Send us a Message</CardTitle>
+              <CardTitle className="text-base">Send us a Message</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -150,8 +154,8 @@ const Contact = () => {
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full bg-gradient-primary hover:opacity-90 shadow-glow"
                 >
                   Send Message
@@ -164,14 +168,15 @@ const Contact = () => {
           <div className="space-y-6">
             <Card className="bg-gradient-card border-border">
               <CardHeader>
-                <CardTitle>Get in Touch</CardTitle>
+                <CardTitle className="text-base">Get in Touch</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-6">
-                  Whether you're a complete beginner or looking to advance your crypto knowledge, 
-                  our team is ready to support your learning journey.
+                <p className="text-sm text-muted-foreground mb-6">
+                  Whether you're a complete beginner or looking to advance your
+                  crypto knowledge, our team is ready to support your learning
+                  journey.
                 </p>
-                
+
                 <div className="space-y-6">
                   {contactInfo.map((info, index) => (
                     <div key={index} className="flex items-start space-x-4">
@@ -179,9 +184,15 @@ const Contact = () => {
                         <info.icon className="h-5 w-5 text-primary" />
                       </div>
                       <div>
-                        <h3 className="font-semibold mb-1">{info.title}</h3>
-                        <p className="text-primary font-medium mb-1">{info.details}</p>
-                        <p className="text-sm text-muted-foreground">{info.description}</p>
+                        <h3 className="text-sm font-semibold mb-1">
+                          {info.title}
+                        </h3>
+                        <p className="text-sm text-primary font-medium mb-1">
+                          {info.details}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {info.description}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -192,27 +203,45 @@ const Contact = () => {
             {/* FAQ */}
             <Card className="bg-gradient-card border-border">
               <CardHeader>
-                <CardTitle>Frequently Asked Questions</CardTitle>
+                <CardTitle className="text-base">
+                  Frequently Asked Questions
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-medium mb-2">Do I need prior experience with cryptocurrency?</h4>
+                    <h4 className="font-medium mb-2">
+                      Do I need prior experience with cryptocurrency?
+                    </h4>
                     <p className="text-sm text-muted-foreground">
-                      Not at all! Our courses are designed for complete beginners and gradually 
-                      build up to advanced topics.
+                      Not at all! Our courses are designed for complete
+                      beginners and gradually build up to advanced topics.
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-2">What payment methods do you accept?</h4>
+                    <h4 className="font-medium mb-2">
+                      What payment methods do you accept?
+                    </h4>
                     <p className="text-sm text-muted-foreground">
-                      We accept all major credit cards, PayPal, and select cryptocurrencies.
+                      We accept all major credit cards, PayPal, and select
+                      cryptocurrencies.
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-2">Is there a money-back guarantee?</h4>
+                    <h4 className="font-medium mb-2">
+                      How can I enroll in the course?
+                    </h4>
                     <p className="text-sm text-muted-foreground">
-                      Yes! We offer a 30-day money-back guarantee on all our courses.
+                      You can easily join by contacting us on{" "}
+                      <a
+                        href="https://wa.me/123456789"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline"
+                      >
+                        WhatsApp
+                      </a>{" "}
+                      or calling us at <strong>123456789</strong>.
                     </p>
                   </div>
                 </div>
