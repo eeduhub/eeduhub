@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { Users, Video, BookOpen, UserPlus, Trash2, LogOut, Plus } from 'lucide-react';
+import { supabase } from "../utils/supabaseClient.js";
+
 
 function AdminPage() {
   const [students, setStudents] = useState([]);
   const [videos, setVideos] = useState([]);
   const [modules, setModules] = useState([]);
+  const [loading, setLoading] = useState(false);
+const [errorMessage, setErrorMessage] = useState('');
+
 
   // Form states
   const [studentForm, setStudentForm] = useState({
     name: '',
-    place: '',
+    email: '',
     phone: '',
     password: ''
   });
@@ -27,32 +32,113 @@ function AdminPage() {
   });
 
   // Student management functions
-  const handleAddStudent = () => {
-    if (studentForm.name && studentForm.place && studentForm.phone && studentForm.password) {
+ const handleAddStudent = async () => {
+  const { name, email, phone, password } = studentForm;
+
+  if (name && email && phone && password) {
+    setLoading(true);        // optional: if you have loading state
+    setErrorMessage("");     // optional: clear previous errors
+
+    try {
+      // 1. Sign up with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { name, phone },  // store extra info as user metadata
+        },
+      });
+
+      if (error) {
+        setErrorMessage(error.message);
+        setLoading(false);
+        return;
+      }
+
+      // 2. If signup successful, add student locally
       const newStudent = {
         id: Date.now(),
-        ...studentForm
+        name,
+        email,
+        phone,
+        password,  // consider NOT storing password here for security reasons
+        userId: data.user?.id, // link to Supabase user ID if needed
       };
-      setStudents([...students, newStudent]);
-      setStudentForm({ name: '', place: '', phone: '', password: '' });
+
+      setStudents(prev => [...prev, newStudent]);
+
+      // 3. Reset the form
+      setStudentForm({ name: "", email: "", phone: "", password: "" });
+
+      // 4. Optionally notify user
+      alert("Signup successful! Please verify your email.");
+    } catch (err) {
+      setErrorMessage("Unexpected error occurred.");
     }
-  };
+
+    setLoading(false);
+  } else {
+    setErrorMessage("Please fill all required fields.");
+  }
+};
 
   const handleDeleteStudent = (id) => {
     setStudents(students.filter(student => student.id !== id));
   };
 
   // Video management functions
-  const handleAddVideo = () => {
-    if (videoForm.youtubeLink && videoForm.title && videoForm.description) {
+  // const handleAddVideo = () => {
+  //   if (videoForm.youtubeLink && videoForm.title && videoForm.description) {
+  //     const newVideo = {
+  //       id: Date.now(),
+  //       ...videoForm
+  //     };
+  //     setVideos([...videos, newVideo]);
+  //     setVideoForm({ youtubeLink: '', title: '', description: '' });
+  //   }
+  // };
+
+
+  const handleAddVideo = async () => {
+  const { youtubeLink, title, description } = videoForm;
+
+  if (youtubeLink && title && description) {
+    try {
+      const { data, error } = await supabase.from("videos").insert([
+        {
+          youtube_link: youtubeLink,
+          title,
+          description
+        }
+      ]);
+
+      if (error) {
+        console.error("Error adding video:", error.message);
+        return;
+      }
+
+      // Optional: Fetch updated video list or update local state
       const newVideo = {
-        id: Date.now(),
-        ...videoForm
+        id: data[0].id,
+        youtubeLink,
+        title,
+        description,
+        createdAt: data[0].created_at,
       };
-      setVideos([...videos, newVideo]);
+
+      setVideos((prev) => [...prev, newVideo]);
+
+      // Reset form
       setVideoForm({ youtubeLink: '', title: '', description: '' });
+
+      alert("Video added successfully!");
+    } catch (err) {
+      console.error("Unexpected error:", err);
     }
-  };
+  } else {
+    alert("Please fill all fields.");
+  }
+};
 
   // Module management functions
   const handleAddModule = () => {
@@ -114,17 +200,17 @@ function AdminPage() {
                   type="text"
                   value={studentForm.name}
                   onChange={(e) => setStudentForm({ ...studentForm, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter student name"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Place</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                 <input
-                  type="text"
-                  value={studentForm.place}
-                  onChange={(e) => setStudentForm({ ...studentForm, place: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  type="email"
+                  value={studentForm.email}
+                  onChange={(e) => setStudentForm({ ...studentForm, email: e.target.value })}
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter place"
                 />
               </div>
@@ -134,7 +220,7 @@ function AdminPage() {
                   type="tel"
                   value={studentForm.phone}
                   onChange={(e) => setStudentForm({ ...studentForm, phone: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter phone number"
                 />
               </div>
@@ -144,7 +230,7 @@ function AdminPage() {
                   type="password"
                   value={studentForm.password}
                   onChange={(e) => setStudentForm({ ...studentForm, password: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter password"
                 />
               </div>
@@ -206,7 +292,7 @@ function AdminPage() {
                   type="url"
                   value={videoForm.youtubeLink}
                   onChange={(e) => setVideoForm({ ...videoForm, youtubeLink: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="https://youtube.com/watch?v=..."
                 />
               </div>
@@ -216,7 +302,7 @@ function AdminPage() {
                   type="text"
                   value={videoForm.title}
                   onChange={(e) => setVideoForm({ ...videoForm, title: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter video title"
                 />
               </div>
@@ -225,17 +311,25 @@ function AdminPage() {
                 <textarea
                   value={videoForm.description}
                   onChange={(e) => setVideoForm({ ...videoForm, description: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 resize-none"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 resize-none"
                   placeholder="Enter video description"
                 />
               </div>
               <button
-                onClick={handleAddVideo}
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-md"
-              >
-                <Plus className="h-4 w-4" />
-                <span>Add Video</span>
-              </button>
+  onClick={!loading ? handleAddVideo : undefined}
+  disabled={loading}
+  className={`w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+>
+  {loading ? (
+    <span>Adding...</span>
+  ) : (
+    <>
+      <Plus className="h-4 w-4" />
+      <span>Add Video</span>
+    </>
+  )}
+</button>
+
             </div>
           </div>
 
@@ -254,7 +348,7 @@ function AdminPage() {
                   type="text"
                   value={moduleForm.title}
                   onChange={(e) => setModuleForm({ ...moduleForm, title: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter module title"
                 />
               </div>
@@ -264,7 +358,7 @@ function AdminPage() {
                   type="text"
                   value={moduleForm.time}
                   onChange={(e) => setModuleForm({ ...moduleForm, time: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="e.g., 2 hours 30 minutes"
                 />
               </div>
@@ -274,7 +368,7 @@ function AdminPage() {
                   type="number"
                   value={moduleForm.videoCount}
                   onChange={(e) => setModuleForm({ ...moduleForm, videoCount: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  className="text-gray-950 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter number of videos"
                   min="0"
                 />

@@ -1,52 +1,53 @@
+import { useEffect, useState } from "react";
+import { supabase } from "../utils/supabaseClient.js";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Play, Clock, Star, BookOpen, Download } from "lucide-react";
 
-
 const SampleClass = () => {
-  const modules = [
-    {
-      title: "Introduction to Bitcoin",
-      duration: "15 min",
-      type: "1 video",
-      completed: false,
-    },
-    {
-      title: "Understanding Blockchain Technology",
-      duration: "20 min",
-      type: "4 video",
-      completed: false,
-    },
-    {
-      title: "Your First Crypto Wallet",
-      duration: "12 min",
-      type: "2 video",
-      completed: false,
-    },
-    {
-      title: "Security Best Practices",
-      duration: "18 min",
-      type: "3 video",
-      completed: false,
-    },
-    {
-      title: "Quiz: Cryptocurrency Basics",
-      duration: "10 min",
-      type: "quiz",
-      completed: false,
-    },
-  ];
+  const [modules, setModules] = useState<any[]>([]);
+  const [features, setFeatures] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const features = [
-    "HD video lessons with subtitles",
-    "Practical resources & easy-to-follow guides",
-    "Doubt-clearing support from mentors",
-    "Community discussion forums",
-    "Mobile-friendly learning platform",
-    "Progress tracking and certificates",
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      // Fetch modules
+      const { data: modulesData, error: modulesError } = await supabase
+        .from("modules")
+        .select("id, title, duration, type, completed, created_at")
+        .order("created_at", { ascending: true });
+
+      if (modulesError) {
+        console.error("Error fetching modules:", modulesError.message);
+      } else {
+        setModules(modulesData || []);
+      }
+
+      // Fetch features
+      const { data: featuresData, error: featuresError } = await supabase
+        .from("features")
+        .select("id, text")
+        .order("created_at", { ascending: true });
+
+      if (featuresError) {
+        console.error("Error fetching features:", featuresError.message);
+      } else {
+        setFeatures(featuresData || []);
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center mt-10">Loading sample class...</p>;
+  }
 
   return (
     <div className="min-h-screen py-12">
@@ -81,7 +82,6 @@ const SampleClass = () => {
                     allowFullScreen
                   ></iframe>
 
-                  {/* ✅ Overlay will not block clicks now */}
                   <div className="absolute inset-0 bg-black/40 rounded-t-lg flex items-center justify-center pointer-events-none"></div>
 
                   <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">
@@ -96,7 +96,7 @@ const SampleClass = () => {
                   <div className="flex items-center space-x-2 text-muted-foreground mb-4 mt-4">
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-1" />
-                     <p className="text-sm">75 minutes</p>
+                      <p className="text-sm">75 minutes</p>
                     </div>
 
                     <div className="flex items-center">
@@ -125,7 +125,7 @@ const SampleClass = () => {
                 <div className="space-y-3">
                   {modules.map((module, index) => (
                     <div
-                      key={index}
+                      key={module.id}
                       className="flex items-center justify-between p-2 bg-background/50 rounded-lg hover:bg-background/70 transition-colors"
                     >
                       <div className="flex items-center space-x-3">
@@ -133,10 +133,10 @@ const SampleClass = () => {
                           {index + 1}
                         </div>
                         <div>
-                          <h4 className="text-xs md:text-sm  font-medium">{module.title}</h4>
+                          <h4 className="text-xs md:text-sm font-medium">{module.title}</h4>
                           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                             <Clock className="h-3 w-3" />
-                            <span className="text-xs md:text-sm ">{module.duration}</span>
+                            <span className="text-xs md:text-sm">{module.duration}</span>
                             <Badge variant="outline" className="text-[10px] md:text-xs">
                               {module.type}
                             </Badge>
@@ -156,19 +156,18 @@ const SampleClass = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* CTA Card */}
-          <Card className="bg-gradient-primary text-white">
-  <CardContent className="p-6 text-center">
-    <h3 className="text-xl font-bold mb-2">Ready for More?</h3>
-    <p className="mb-4 opacity-90">
-      Unlock the complete cryptocurrency mastery course Best content.
-    </p>
-    <Button variant="secondary" className="w-full mb-2 ">
-      <span className="text-sm line-through opacity-70">INR 36,000</span>
-      <span className="text-lg font-bold">3,600 /-</span>
-    </Button>
-  </CardContent>
-</Card>
-
+            <Card className="bg-gradient-primary text-white">
+              <CardContent className="p-6 text-center">
+                <h3 className="text-xl font-bold mb-2">Ready for More?</h3>
+                <p className="mb-4 opacity-90">
+                  Unlock the complete cryptocurrency mastery course Best content.
+                </p>
+                <Button variant="secondary" className="w-full mb-2">
+                  <span className="text-sm line-through opacity-70">INR 36,000</span>
+                  <span className="text-lg font-bold">3,600 /-</span>
+                </Button>
+              </CardContent>
+            </Card>
 
             {/* Features */}
             <Card className="bg-gradient-card border-border">
@@ -177,12 +176,10 @@ const SampleClass = () => {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  {features.map((feature, index) => (
-                    <li key={index} className="flex items-start space-x-2">
+                  {features.map((feature) => (
+                    <li key={feature.id} className="flex items-start space-x-2">
                       <Download className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">
-                        {feature}
-                      </span>
+                      <span className="text-sm text-muted-foreground">{feature.text}</span>
                     </li>
                   ))}
                 </ul>
@@ -194,8 +191,7 @@ const SampleClass = () => {
               <CardContent className="p-6 text-center">
                 <h3 className="font-semibold mb-2">Have Questions?</h3>
                 <p className="text-muted-foreground text-sm mb-4">
-                  Our team is here to help you succeed in your crypto learning
-                  journey.
+                  Our team is here to help you succeed in your crypto learning journey.
                 </p>
                 <Link to="/contact">
                   <Button variant="outline" size="sm" className="w-full">

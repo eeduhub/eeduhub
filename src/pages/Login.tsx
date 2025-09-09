@@ -5,12 +5,16 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../utils/supabaseClient.js";
 
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: ""
   });
 
@@ -22,12 +26,25 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt:", formData);
-    // Redirect to dashboard
-    navigate("/dashboard");
+    setLoading(true);
+    setErrorMessage("");
+
+    const { email, password } = formData;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      setErrorMessage("Invalid email or password.");
+    } else {
+      navigate("/dashboard");
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -53,15 +70,15 @@ const Login = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Username Field */}
+              {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
-                  id="username"
-                  name="username"
-                  type="text"
-                  placeholder="Enter your username"
-                  value={formData.username}
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
                   onChange={handleInputChange}
                   required
                   className="transition-all duration-200 focus:shadow-lg focus:shadow-primary/20"
@@ -98,21 +115,24 @@ const Login = () => {
                 </div>
               </div>
 
+              {/* Error Message */}
+              {errorMessage && (
+                <p className="text-sm text-red-500 text-center">{errorMessage}</p>
+              )}
+
               {/* Login Button */}
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-gradient-primary hover:opacity-90 transition-all duration-200 shadow-lg hover:shadow-xl"
                 size="lg"
+                disabled={loading}
               >
-                Login
+                {loading ? "Logging in..." : "Login"}
               </Button>
 
               {/* Additional Links */}
               <div className="text-center space-y-2">
-                <a 
-                  href="#" 
-                  className="text-sm text-primary hover:underline"
-                >
+                <a href="#" className="text-sm text-primary hover:underline">
                   Forgot your password?
                 </a>
                 <p className="text-sm text-muted-foreground">
@@ -128,8 +148,8 @@ const Login = () => {
 
         {/* Back to Home */}
         <div className="text-center mt-6">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="text-sm text-muted-foreground hover:text-primary transition-colors"
           >
             ← Back to Home
