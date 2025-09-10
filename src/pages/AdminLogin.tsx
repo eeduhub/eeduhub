@@ -5,7 +5,18 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../utils/supabaseClient.js";
+
+// 🔑 Unicode-safe Base64 encoder/decoder
+function safeBtoa(str: string) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function safeAtob(str: string) {
+  return decodeURIComponent(escape(atob(str)));
+}
+
+// 🔒 Static Admin Credentials (demo only)
+const ADMIN_EMAIL = "eeduhub1@gmail.com";
+const ADMIN_PASSWORD_HASH = safeBtoa("Eduhuboffi1030@₹"); // Unicode-safe encode
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -16,21 +27,23 @@ function AdminLogin() {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage("");
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setErrorMessage("Invalid email or password.");
-    } else {
-      // Optional: you can fetch the session or user info here if needed
+    // 🟢 Validate static credentials
+    if (email === ADMIN_EMAIL && safeBtoa(password) === ADMIN_PASSWORD_HASH) {
+      localStorage.setItem(
+        "eeduhub_admin",
+        JSON.stringify({
+          email: ADMIN_EMAIL,
+          loggedInAt: new Date().toISOString(),
+        })
+      );
       navigate("/eeduhubAdmin");
+    } else {
+      setErrorMessage("Invalid email or password.");
     }
 
     setLoading(false);
@@ -50,9 +63,7 @@ function AdminLogin() {
 
         <Card className="shadow-lg border-border/50">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">
-              Admin Management
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold">Admin Management</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">

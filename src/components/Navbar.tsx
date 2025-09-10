@@ -20,9 +20,12 @@ export const Navbar = () => {
     <nav className="bg-card/50 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <GraduationCap className="h-8 w-8 text-primary" />
+            <img
+              src="/eduhub.png"
+              alt="brand-logo"
+              className="h-8 w-8 object-contain" // 👈 controls logo size
+            />
             <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               eeduhub
             </span>
@@ -35,13 +38,20 @@ export const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={`transition-colors hover:text-primary ${
-                  isActive(link.path) ? "text-primary font-medium" : "text-muted-foreground"
+                  isActive(link.path)
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground"
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <Button variant="default" size="sm" className="bg-gradient-primary hover:opacity-90" asChild>
+            <Button
+              variant="default"
+              size="sm"
+              className="bg-gradient-primary hover:opacity-90"
+              asChild
+            >
               <Link to="/login">Get Started</Link>
             </Button>
           </div>
@@ -65,14 +75,21 @@ export const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={`block transition-colors hover:text-primary ${
-                  isActive(link.path) ? "text-primary font-medium" : "text-muted-foreground"
+                  isActive(link.path)
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground"
                 }`}
                 onClick={() => setIsOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <Button variant="default" size="sm" className="bg-gradient-primary hover:opacity-90 w-full" asChild>
+            <Button
+              variant="default"
+              size="sm"
+              className="bg-gradient-primary hover:opacity-90 w-full"
+              asChild
+            >
               <Link to="/login">Get Started</Link>
             </Button>
           </div>

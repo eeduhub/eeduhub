@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabaseClient.js";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Play, Clock, CheckCircle } from "lucide-react";
@@ -18,6 +24,15 @@ const Dashboard = () => {
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Load watched videos from localStorage
+  useEffect(() => {
+    const savedProgress = localStorage.getItem("watchedVideos");
+    if (savedProgress) {
+      setWatchedVideos(JSON.parse(savedProgress));
+    }
+  }, []);
+
+  // Fetch videos from Supabase
   useEffect(() => {
     const fetchVideos = async () => {
       setLoading(true);
@@ -35,6 +50,11 @@ const Dashboard = () => {
 
     fetchVideos();
   }, []);
+
+  // Save watchedVideos to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("watchedVideos", JSON.stringify(watchedVideos));
+  }, [watchedVideos]);
 
   const progressPercentage =
     videos.length > 0 ? (watchedVideos.length / videos.length) * 100 : 0;

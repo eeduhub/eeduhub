@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import Index from "./pages/Index";
@@ -14,6 +14,17 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/AdminPage";
 import AdminLogin from "./pages/AdminLogin";
+
+// ✅ Create ProtectedRoute component
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const adminData = localStorage.getItem("eeduhub_admin");
+
+  if (!adminData) {
+    return <Navigate to="/AdminLogin" replace />;
+  }
+
+  return children;
+};
 
 const queryClient = new QueryClient();
 
@@ -33,8 +44,18 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/eeduhubAdmin" element={<AdminPage/>} />
-              <Route path="/AdminLogin" element={<AdminLogin/>} />
+
+              {/* 🔒 Protected Admin Route */}
+              <Route
+                path="/eeduhubAdmin"
+                element={
+                  <ProtectedRoute>
+                    <AdminPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route path="/AdminLogin" element={<AdminLogin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

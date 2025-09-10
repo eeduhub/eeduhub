@@ -2,7 +2,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient.js";
@@ -15,14 +21,14 @@ const Login = () => {
 
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -35,7 +41,7 @@ const Login = () => {
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     });
 
     if (error) {
@@ -53,7 +59,11 @@ const Login = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center space-x-2">
-            <GraduationCap className="h-10 w-10 text-primary" />
+            <img
+              src="/eduhub.png"
+              alt="brand-logo"
+              className="h-8 w-8 object-contain" // 👈 controls logo size
+            />
             <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               eeduhub
             </span>
@@ -117,7 +127,9 @@ const Login = () => {
 
               {/* Error Message */}
               {errorMessage && (
-                <p className="text-sm text-red-500 text-center">{errorMessage}</p>
+                <p className="text-sm text-red-500 text-center">
+                  {errorMessage}
+                </p>
               )}
 
               {/* Login Button */}
