@@ -26,56 +26,64 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
 
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.message) {
-      toast({
-        title: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Simulate form submission
+  // Basic validation
+  if (!formData.name || !formData.email || !formData.message) {
     toast({
-      title: "Message sent successfully!",
-      description: "We'll get back to you within 24 hours.",
+      title: "Please fill in all required fields",
+      variant: "destructive",
     });
+    return;
+  }
 
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
-  };
+  // Format WhatsApp message
+  const whatsappMessage = `Hello, I would like to contact you.%0A
+*Name:* ${formData.name}%0A
+*Email:* ${formData.email}%0A
+*Subject:* ${formData.subject || "N/A"}%0A
+*Message:* ${formData.message}`;
+
+  // WhatsApp link (with prefilled message)
+  const whatsappURL = `https://wa.me/919048123010?text=${whatsappMessage}`;
+
+  // Open WhatsApp chat
+  window.open(whatsappURL, "_blank");
+
+  // Success toast
+  toast({
+    title: "Redirecting to WhatsApp...",
+    description: "Please complete your message in WhatsApp.",
+  });
+
+  // Reset form
+  setFormData({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+};
+
 
   const contactInfo = [
     {
       icon: Mail,
       title: "Email Us",
-      details: "support@eeduhub.com",
+      details: "eeduhub1@gmail.com",
       description: "Send us an email anytime",
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: "+1 (555) 123-4567",
+      details: "+91 9048123010",
       description: "Mon-Fri 9AM-6PM EST",
-    },
-    {
-      icon: MapPin,
-      title: "Visit Us",
-      details: "123 Education St, Tech City, TC 12345",
-      description: "Our main office location",
     },
     {
       icon: Clock,
       title: "Response Time",
-      details: "< 24 hours",
+      details: "< 24 hours*",
       description: "Average response time",
     },
   ];
@@ -234,14 +242,14 @@ const Contact = () => {
                     <p className="text-sm text-muted-foreground">
                       You can easily join by contacting us on{" "}
                       <a
-                        href="https://wa.me/123456789"
+                        href="https://wa.me/+919048123010"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-primary underline"
                       >
                         WhatsApp
                       </a>{" "}
-                      or calling us at <strong>123456789</strong>.
+                      or calling us at <strong>+91 9048123010</strong>.
                     </p>
                   </div>
                 </div>

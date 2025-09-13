@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen, Shield, Users, TrendingUp } from "lucide-react";
 import heroImage from "@/assets/hero-crypto.jpg";
+import whatsapp from './../assets/img/whatsapp.png'
 
 const Index = () => {
   const features = [
@@ -34,6 +35,28 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '50px',
+          right: '30px',
+          zIndex: 9999,
+        }}
+
+      >
+      <img
+        src={whatsapp}
+        alt="watsapp"
+        onClick={() => window.open('https://wa.me/919048123010', '_blank')} // replace with your number
+        style={{
+          width: '50px',
+          height: '50px',
+          cursor: 'pointer',
+
+        }}
+      />
+
+      </div>
       {/* Hero Section */}
       <section className="relative bg-gradient-hero overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>

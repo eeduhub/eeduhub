@@ -74,7 +74,7 @@ const SampleClass = () => {
                 <div className="relative h-64 md:h-96 bg-cover bg-center rounded-t-lg overflow-hidden">
                   <iframe
                     className="absolute inset-0 w-full h-full rounded-t-lg"
-                    src="https://www.youtube.com/embed/rYQgy8QDEBI?si=bJUpUCUWPjBu476P"
+                    src="https://www.youtube.com/embed/s1XDJjBZuzA?si=i2si32QheVc9O_Wy"
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

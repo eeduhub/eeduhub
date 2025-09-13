@@ -144,13 +144,20 @@ const Login = () => {
 
               {/* Additional Links */}
               <div className="text-center space-y-2">
-                <a href="#" className="text-sm text-primary hover:underline">
+                <a   href="https://wa.me/123456789"
+                    target="_blank"
+                    rel="noopener noreferrer" className="text-sm text-primary hover:underline">
                   Forgot your password?
                 </a>
                 <p className="text-sm text-muted-foreground">
-                  Don't have an account?{" "}
-                  <a href="#" className="text-primary hover:underline">
-                    Sign up
+                  Not enrolled yet?{" "}
+                  <a
+                    href="https://wa.me/123456789"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    Contact
                   </a>
                 </p>
               </div>

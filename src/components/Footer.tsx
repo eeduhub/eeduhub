@@ -17,17 +17,7 @@ export const Footer = () => {
             <p className="text-sm text-muted-foreground mb-4 max-w-md">
            We make Bitcoin and crypto easy to understand. With step-by-step lessons, lifetime access, and beginner-friendly guidance, you’ll learn at your own pace and gain the confidence to start your crypto journey.
             </p>
-            <div className="flex space-x-4">
-              <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary cursor-pointer transition-colors">
-                <Twitter className="h-4 w-4" />
-              </div>
-              <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary cursor-pointer transition-colors">
-                <Youtube className="h-4 w-4" />
-              </div>
-              <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center hover:bg-primary cursor-pointer transition-colors">
-                <Github className="h-4 w-4" />
-              </div>
-            </div>
+
           </div>
 
           {/* Quick Links */}
@@ -78,7 +68,7 @@ export const Footer = () => {
      <div className="border-t border-border pt-8 mt-8">
   <div className="flex flex-col md:flex-row justify-between items-center">
     <p className="text-muted-foreground text-sm">
-      © 2024 eeduhub. All rights reserved.
+      © 2025 eeduhub. All rights reserved.
     </p>
     <p className="text-muted-foreground text-sm mt-2 md:mt-0">
       Website designed by <a href="https://www.aionespark.com/" className="no-underline">Aione Spark TechHive LLP</a>.
